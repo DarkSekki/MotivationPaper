@@ -1,0 +1,8 @@
+services:
+  letter:
+    build: .
+    image: motiv-letter:latest
+    volumes:
+      - ./:/work
+    # Default args, can be overridden on the command line
+    command: ["letter.md","Motivationsschreiben.pdf"]

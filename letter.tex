@@ -1,0 +1,46 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[ngerman]{babel}
+\setlength\parskip{6pt}
+\setlength\parindent{0pt}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+% Sender
+$if(sender_name)$\textbf{$sender_name$}\\$endif$
+$if(sender_address)$$sender_address$\\$endif$
+$if(sender_phone)$Tel. $sender_phone$\\$endif$
+$if(sender_email)$\href{mailto:$sender_email$}{$sender_email$}\\$endif$
+
+\vspace{12pt}
+
+% Ort und Datum
+$if(city)$$city$, $endif$$if(date)$$date$$endif$
+
+\vspace{12pt}
+
+% Empfaenger
+$if(recipient_company)$\textbf{$recipient_company$}\\$endif$
+$if(recipient_name)$$recipient_name$\\$endif$
+$if(recipient_address)$$recipient_address$\\$endif$
+
+\vspace{18pt}
+
+% Betreff
+$if(subject)$\textbf{$subject$}$endif$
+
+\vspace{12pt}
+
+$body$
+
+\vspace{18pt}
+
+$if(closing)$$closing$\\$endif$
+$if(sender_name)$$sender_name$$endif$
+
+\end{document}
