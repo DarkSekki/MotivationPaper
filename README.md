@@ -1,93 +1,83 @@
-# Motivationsschreiben PDF Generator (Markdown + Docker)
+# Motivation Letter PDF Generator (Split Version)
 
-Dieses Projekt ermöglicht es, ein Motivationsschreiben als **Markdown-Datei** zu pflegen und daraus mit **Pandoc + LaTeX in Docker** ein fertiges PDF zu erzeugen.  
-Perfekt, um schnell verschiedene Versionen für unterschiedliche Firmen zu erstellen, ohne Formatierungsaufwand.
+Dieses Projekt trennt das Motivationsschreiben in **statische** und **variable** Inhalte, damit du nur noch die variable Datei pro Bewerbung anpassen musst.
 
----
-
-## 📂 Projektstruktur
+## 📂 Struktur
 
 ```
-motivationsschreiben_template/
+motivation_letter_split/
 │
-├── letter.md               # Dein Motivationsschreiben (Markdown)
-├── letter.tex               # LaTeX-Vorlage für das Layout
-├── Dockerfile               # Docker Image mit Pandoc + LaTeX
-├── docker_build.sh          # Skript zum PDF-Bau im Container
-├── docker-compose.yml       # Optional: Einfacher Aufruf per Compose
-└── README.md                # Diese Anleitung
+├── letter_static.md       # Fester Inhalt: deine Daten, "Warum ich", Schluss
+├── letter_variable.md     # Variabler Inhalt: Firmendaten, Einleitung, "Warum Ihr Unternehmen"
+├── letter.tex             # LaTeX-Template für das Layout
+├── build.sh               # Skript zum Erzeugen eines PDFs mit Pandoc
+├── Dockerfile             # Docker-Image mit Pandoc + LaTeX
+└── docker-compose.yml     # Optional: einfacher Aufruf mit Docker Compose
 ```
 
 ---
 
 ## 🛠 Voraussetzungen
-- **Docker** installiert  
-  Prüfen:
-  ```bash
-  docker --version
-  ```
-- Optional: **Docker Compose** für kürzere Befehle
+
+### Lokal (ohne Docker)
+- Pandoc
+- LaTeX (texlive)
+
+Installation unter Ubuntu:
+```bash
+sudo apt update
+sudo apt install -y pandoc texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+```
+
+### Mit Docker
+- Docker
+- (Optional) Docker Compose
 
 ---
 
 ## 🚀 Nutzung
 
-### 1. Image bauen
+### 1. Statische Daten anpassen
+In `letter_static.md` einmalig deine Daten eintragen:
+- Name, Adresse, Telefonnummer, E-Mail
+- Dein "Warum ich"
+- Standard-Schluss
+
+### 2. Variable Daten pro Bewerbung anpassen
+In `letter_variable.md`:
+- Datum, Stadt
+- Firma, Ansprechpartner, Adresse
+- Stellenbezeichnung
+- Individuelle Einleitung
+- "Warum Ihr Unternehmen"
+
+### 3. PDF erzeugen
+
+#### Lokal (ohne Docker)
 ```bash
-docker build -t motiv-letter .
+./build.sh letter_variable.md letter_static.md Bewerbung-FirmaXYZ.pdf
 ```
 
-### 2. PDF erzeugen
-Im Projektordner ausführen:
+#### Mit Docker Compose
+Image bauen:
 ```bash
-docker run --rm -v "$PWD":/work motiv-letter letter.md Motivationsschreiben.pdf
+docker compose build
 ```
-- `letter.md` = Eingabedatei  
-- `Motivationsschreiben.pdf` = Ausgabedatei
+PDF erzeugen:
+```bash
+docker compose run --rm letter letter_variable.md letter_static.md Bewerbung-FirmaXYZ.pdf
+```
 
-Das PDF liegt danach im gleichen Ordner.
+Das PDF liegt danach im Projektordner.
 
 ---
 
-## 💡 Mit Docker Compose
-```bash
-docker compose run --rm letter letter.md Motivationsschreiben.pdf
-```
+## 💡 Tipps
+- Du kannst beliebig viele `letter_variable.md`-Dateien für verschiedene Bewerbungen anlegen.
+- Das LaTeX-Template `letter.tex` kannst du an dein gewünschtes Layout anpassen.
+- Mit Docker musst du keine lokale LaTeX/Pandoc-Installation vornehmen.
 
 ---
 
-## ✏ Anpassung für neue Firmen
-1. Öffne `letter.md`  
-2. Ändere die Werte im **YAML-Kopfbereich**:
-   ```yaml
-   recipient_company: Neue Firma GmbH
-   recipient_name: Herr Max Muster
-   recipient_address: Musterstrasse 1, 8000 Zürich
-   subject: Bewerbung als Projektleiter
-   date: 15. August 2025
-   city: Zürich
-   closing: Mit freundlichen Grüssen
-   ```
-3. Passe den Haupttext an  
-4. Erneut PDF bauen
-
----
-
-## 🎨 Vorlage ändern
-- `letter.tex` enthält das Layout  
-- Wenn du sie änderst, wird diese lokale Datei statt der Standardvorlage im Image genutzt.
-
----
-
-## 🔄 Anderen Dateinamen nutzen
-```bash
-docker run --rm -v "$PWD":/work motiv-letter meinbrief.md Bewerbung-NeueFirma.pdf
-```
-
----
-
-## 🧹 Aufräumen
-Nicht mehr benötigte Docker-Images entfernen:
-```bash
-docker rmi motiv-letter
-```
+## 📜 Lizenz
+Frei für private und kommerzielle Nutzung.

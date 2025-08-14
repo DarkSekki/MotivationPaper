@@ -4,5 +4,4 @@ services:
     image: motiv-letter:latest
     volumes:
       - ./:/work
-    # Default args, can be overridden on the command line
-    command: ["letter.md","Motivationsschreiben.pdf"]
+    command: ["letter_variable.md", "letter_static.md", "Motivationsschreiben.pdf"]
