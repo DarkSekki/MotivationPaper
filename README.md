@@ -15,8 +15,7 @@ motivationsschreiben_template/
 ├── Dockerfile               # Docker Image mit Pandoc + LaTeX
 ├── docker_build.sh          # Skript zum PDF-Bau im Container
 ├── docker-compose.yml       # Optional: Einfacher Aufruf per Compose
-├── README.md                # Diese Anleitung
-└── README_docker.txt        # Kurze Docker-Kommandos
+└── README.md                # Diese Anleitung
 ```
 
 ---
