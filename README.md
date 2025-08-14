@@ -92,8 +92,3 @@ Nicht mehr benötigte Docker-Images entfernen:
 ```bash
 docker rmi motiv-letter
 ```
-
----
-
-## 📜 Lizenz
-Frei zur privaten und kommerziellen Nutzung.
